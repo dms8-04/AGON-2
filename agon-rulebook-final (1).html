@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AGON: The Archaic Age — Rulebook v6.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   AGON FINAL RULEBOOK  ·  v6.0  ·  Griffin Games
+   Aesthetic: Antique parchment · Greek antiquity · Premium print
+═══════════════════════════════════════════════════════════ */
+
+:root {
+  --parchment:    #F4EDD8;
+  --parchment-dk: #E8DEC0;
+  --parchment-md: #EDE4CA;
+  --ink:          #1A1208;
+  --ink-mid:      #2E2210;
+  --ink-soft:     #4A3C28;
+  --ink-muted:    #7A6548;
+  --gold:         #8B6914;
+  --gold-bright:  #C9A84C;
+  --gold-pale:    #E2C97A;
+  --gold-deep:    #5C430A;
+  --navy:         #0D1B2A;
+  --crimson:      #7A1515;
+  --border:       rgba(139,105,20,0.35);
+  --border-light: rgba(139,105,20,0.18);
+  --shadow:       rgba(26,18,8,0.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--parchment-dk);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', 'IM Fell English', Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+/* ══════════════════════════════
+   COVER PAGE
+══════════════════════════════ */
+.cover {
+  position: relative; z-index: 1;
+  background: var(--navy);
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 60px 40px;
+  overflow: hidden;
+}
+
+/* greek key SVG border */
+.cover::before {
+  content:'';
+  position:absolute; inset:20px;
+  border: 2px solid rgba(201,168,76,0.4);
+  pointer-events:none; z-index:0;
+}
+.cover::after {
+  content:'';
+  position:absolute; inset:26px;
+  border: 1px solid rgba(201,168,76,0.2);
+  pointer-events:none; z-index:0;
+}
+
+/* radial glow background */
+.cover-glow {
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(139,105,20,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 80%, rgba(13,27,42,0.9) 0%, transparent 100%);
+}
+
+/* stars / dots decorative */
+.cover-stars {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    radial-gradient(circle, rgba(201,168,76,0.6) 1px, transparent 1px),
+    radial-gradient(circle, rgba(201,168,76,0.3) 1px, transparent 1px);
+  background-size: 80px 80px, 40px 40px;
+  background-position: 0 0, 20px 20px;
+  opacity: 0.12;
+}
+
+.cover-inner { position:relative; z-index:1; max-width:640px; }
+
+.cover-tag {
+  font-family:'Cinzel', serif;
+  font-size:0.68rem; letter-spacing:0.4em;
+  color: var(--gold-bright); text-transform:uppercase;
+  margin-bottom:28px; display:block;
+  opacity:0;
+  animation: fadein 0.8s 0.2s ease forwards;
+}
+
+.cover-logo {
+  font-family:'Cinzel Decorative', serif;
+  font-size: clamp(4rem, 14vw, 8.5rem);
+  font-weight:900; line-height:0.88;
+  color: var(--gold-pale);
+  letter-spacing:0.04em;
+  text-shadow:
+    0 0 80px rgba(201,168,76,0.35),
+    0 4px 40px rgba(0,0,0,0.5);
+  opacity:0;
+  animation: fadein 1s 0.4s ease forwards;
+}
+
+.cover-subtitle {
+  font-family:'Cinzel', serif;
+  font-size: clamp(0.85rem, 2.5vw, 1.15rem);
+  letter-spacing:0.32em; color:var(--parchment-dk);
+  margin-top:14px; font-weight:400;
+  opacity:0;
+  animation: fadein 0.8s 0.7s ease forwards;
+}
+
+.cover-rule {
+  width:180px; height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+  margin:28px auto;
+  opacity:0; animation: fadein 0.8s 0.9s ease forwards;
+}
+
+.cover-ornament {
+  font-size:1.5rem; color:var(--gold-bright);
+  letter-spacing:16px; opacity:0.6;
+  display:block; margin-bottom:20px;
+  opacity:0; animation: fadein 0.8s 1s ease forwards;
+}
+
+.cover-stats {
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:8px 20px; margin-top:8px;
+  opacity:0; animation: fadein 0.8s 1.1s ease forwards;
+}
+.cover-stats span {
+  font-family:'Cinzel', serif;
+  font-size:0.65rem; letter-spacing:0.2em; color:var(--gold-bright);
+  text-transform:uppercase;
+  border:1px solid rgba(201,168,76,0.3);
+  padding:5px 14px; border-radius:1px;
+  background:rgba(201,168,76,0.06);
+}
+
+.cover-version {
+  margin-top:40px; font-family:'Cinzel', serif;
+  font-size:0.6rem; letter-spacing:0.25em;
+  color:rgba(201,168,76,0.45); text-transform:uppercase;
+  opacity:0; animation: fadein 0.8s 1.3s ease forwards;
+}
+
+.cover-scroll-hint {
+  position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+  font-family:'Cinzel', serif; font-size:0.6rem;
+  letter-spacing:0.2em; color:rgba(201,168,76,0.4);
+  text-transform:uppercase;
+  animation: pulse 2.5s 2s ease-in-out infinite;
+  z-index:2;
+}
+
+@keyframes fadein { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pulse  { 0%,100%{opacity:0.3} 50%{opacity:0.7} }
+
+/* ══════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════ */
+.book-wrap {
+  position:relative; z-index:1;
+  display:grid;
+  grid-template-columns: 230px 1fr;
+  max-width:1100px;
+  margin:0 auto;
+  gap:0;
+}
+
+/* ══════════════════════════════
+   SIDEBAR NAV
+══════════════════════════════ */
+.sidebar {
+  position:sticky; top:0; height:100vh;
+  overflow-y:auto; padding:36px 0 36px 28px;
+  border-right: 1px solid var(--border-light);
+  background: rgba(232,222,192,0.5);
+  backdrop-filter:blur(4px);
+}
+.sidebar::-webkit-scrollbar { width:4px; }
+.sidebar::-webkit-scrollbar-track { background:transparent; }
+.sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+.sidebar-logo {
+  font-family:'Cinzel Decorative', serif;
+  font-size:1.1rem; font-weight:700;
+  color:var(--gold); letter-spacing:0.06em;
+  margin-bottom:6px; display:block;
+}
+.sidebar-ver {
+  font-family:'Cinzel', serif; font-size:0.6rem;
+  letter-spacing:0.18em; color:var(--ink-muted);
+  text-transform:uppercase; display:block;
+  margin-bottom:24px;
+}
+
+.sidebar hr { border:none; border-top:1px solid var(--border-light); margin:14px 0; }
+
+.nav-section-label {
+  font-family:'Cinzel', serif; font-size:0.58rem;
+  letter-spacing:0.22em; color:var(--ink-muted);
+  text-transform:uppercase; display:block;
+  margin:18px 0 6px; padding-right:20px;
+}
+
+.sidebar a {
+  display:block; padding:4px 20px 4px 0;
+  font-family:'Cinzel', serif; font-size:0.72rem;
+  letter-spacing:0.09em; color:var(--ink-soft);
+  text-decoration:none; text-transform:uppercase;
+  border-left:2px solid transparent;
+  transition:color 0.2s, border-color 0.2s;
+  line-height:1.5;
+}
+.sidebar a:hover { color:var(--gold); }
+.sidebar a.active {
+  color:var(--gold); border-left-color:var(--gold-bright);
+  padding-left:8px;
+}
+
+/* ══════════════════════════════
+   MAIN CONTENT
+══════════════════════════════ */
+.main-content {
+  padding: 64px 56px 100px 56px;
+  background: var(--parchment);
+  min-height:100vh;
+}
+
+/* ── SECTION HEADERS ── */
+section { scroll-margin-top:20px; margin-bottom:72px; }
+
+.section-header {
+  display:flex; align-items:baseline; gap:14px;
+  margin-bottom:6px;
+}
+.section-num {
+  font-family:'Cinzel', serif; font-size:0.65rem;
+  letter-spacing:0.18em; color:var(--gold);
+  text-transform:uppercase; flex-shrink:0;
+  padding-top:6px;
+}
+h2 {
+  font-family:'Cinzel', serif;
+  font-size: clamp(1.4rem,3vw,1.9rem);
+  font-weight:700; color:var(--ink);
+  letter-spacing:0.06em; line-height:1.1;
+}
+.section-rule {
+  height:1px; border:none;
+  background:linear-gradient(90deg, var(--gold), transparent);
+  margin:10px 0 28px;
+}
+
+h3 {
+  font-family:'Cinzel', serif;
+  font-size:0.88rem; font-weight:600;
+  color:var(--gold-deep); letter-spacing:0.14em;
+  text-transform:uppercase; margin:32px 0 10px;
+}
+h4 {
+  font-family:'Cinzel', serif; font-size:0.78rem;
+  font-weight:600; color:var(--ink-soft);
+  letter-spacing:0.12em; text-transform:uppercase;
+  margin:20px 0 8px;
+}
+
+p { margin-bottom:14px; color:var(--ink-mid); font-size:1rem; }
+p:last-child { margin-bottom:0; }
+strong { color:var(--ink); font-weight:600; }
+em { font-style:italic; }
+
+/* ── ORNAMENT DIVIDER ── */
+.ornament {
+  text-align:center; color:var(--gold-bright);
+  font-size:1rem; letter-spacing:12px;
+  margin:36px 0; opacity:0.6;
+}
+
+/* ── LEAD TEXT ── */
+.lead {
+  font-family:'IM Fell English', serif;
+  font-size:1.12rem; font-style:italic;
+  color:var(--ink-soft); line-height:1.75;
+  margin-bottom:20px;
+  border-left:3px solid var(--gold-bright);
+  padding-left:18px;
+}
+
+/* ── STAT BOXES ── */
+.stat-row {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:12px; margin:22px 0;
+}
+.stat-box {
+  background:var(--parchment-md);
+  border:1px solid var(--border);
+  text-align:center; padding:16px 10px;
+  position:relative; overflow:hidden;
+}
+.stat-box::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+}
+.stat-box .n {
+  font-family:'Cinzel Decorative', serif;
+  font-size:2rem; font-weight:700;
+  color:var(--gold); display:block; line-height:1;
+}
+.stat-box .l {
+  font-family:'Cinzel', serif; font-size:0.62rem;
+  letter-spacing:0.12em; color:var(--ink-muted);
+  text-transform:uppercase; margin-top:6px; display:block;
+}
+
+/* ── TABLES ── */
+.tbl-wrap { overflow-x:auto; margin:20px 0; }
+table {
+  width:100%; border-collapse:collapse; font-size:0.92rem;
+  border:1px solid var(--border);
+}
+thead { background:var(--ink); }
+thead th {
+  font-family:'Cinzel', serif; font-size:0.65rem;
+  letter-spacing:0.16em; color:var(--gold-pale);
+  text-transform:uppercase; padding:11px 14px;
+  text-align:left; font-weight:600; white-space:nowrap;
+}
+tbody td {
+  padding:10px 14px; color:var(--ink-mid);
+  border-bottom:1px solid var(--border-light);
+  vertical-align:top;
+}
+tbody tr:last-child td { border-bottom:none; }
+tbody tr:nth-child(even) { background:rgba(139,105,20,0.04); }
+tbody tr:hover { background:rgba(139,105,20,0.07); }
+
+/* ── CALLOUT / NOTE BOXES ── */
+.box {
+  border:1px solid var(--border);
+  background:var(--parchment-md);
+  padding:18px 22px; margin:20px 0;
+  position:relative;
+}
+.box.gold  { border-color:var(--gold-bright); border-left-width:3px; }
+.box.red   { border-color:var(--crimson); border-left-width:3px; background:rgba(122,21,21,0.04); }
+.box.dark  { background:var(--ink); color:var(--parchment); border-color:var(--gold-deep); }
+.box.dark p { color:var(--parchment-dk); }
+.box.dark strong { color:var(--gold-pale); }
+
+.box-label {
+  font-family:'Cinzel', serif; font-size:0.6rem;
+  letter-spacing:0.22em; color:var(--gold);
+  text-transform:uppercase; display:block; margin-bottom:8px;
+}
+.box.red .box-label { color:var(--crimson); }
+
+/* ── DOMAIN CARDS ── */
+.domain-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:16px; margin:22px 0;
+}
+.d-card {
+  border:1px solid var(--border);
+  background:var(--parchment-md);
+  padding:20px 18px; position:relative; overflow:hidden;
+}
+.d-card::after {
+  content:attr(data-glyph);
+  position:absolute; right:12px; top:-4px;
+  font-size:5rem; opacity:0.06; line-height:1;
+  pointer-events:none; color:var(--ink);
+}
+.d-icon { font-size:1.4rem; display:block; margin-bottom:8px; }
+.d-name {
+  font-family:'Cinzel', serif; font-size:0.85rem;
+  font-weight:700; color:var(--ink); letter-spacing:0.06em;
+  margin-bottom:2px; text-transform:uppercase;
+}
+.d-flavor {
+  font-family:'IM Fell English', serif; font-style:italic;
+  font-size:0.82rem; color:var(--ink-muted); margin-bottom:12px;
+}
+.d-card p { font-size:0.9rem; }
+.d-restrict {
+  margin-top:10px; padding-top:10px;
+  border-top:1px solid var(--border-light);
+  font-size:0.82rem; color:var(--crimson);
+  font-style:italic;
+}
+.d-balance {
+  margin-top:8px; font-size:0.8rem; color:var(--gold-deep);
+  background:rgba(139,105,20,0.07);
+  border:1px solid var(--border-light);
+  padding:7px 10px;
+}
+.d-balance .bl { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; display:block; margin-bottom:3px; color:var(--gold); }
+
+/* ── RESOURCE TRIO ── */
+.res-trio { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:20px 0; }
+.res-block {
+  border:1px solid var(--border);
+  padding:18px 14px; text-align:center;
+  background:var(--parchment-md);
+}
+.res-block .res-sym { font-size:2rem; display:block; margin-bottom:8px; }
+.res-block .res-name {
+  font-family:'Cinzel', serif; font-size:0.8rem;
+  font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--ink); margin-bottom:6px;
+}
+.res-block p { font-size:0.85rem; margin-bottom:6px; }
+.res-block .res-rate {
+  font-family:'Cinzel', serif; font-size:0.7rem;
+  letter-spacing:0.12em; color:var(--gold);
+  text-transform:uppercase;
+}
+
+/* ── ROUND SEQUENCE STEPS ── */
+.steps { counter-reset:s; margin:20px 0; }
+.step { display:flex; gap:18px; margin-bottom:20px; align-items:flex-start; }
+.s-num {
+  flex-shrink:0; width:38px; height:38px;
+  background:var(--ink); color:var(--gold-pale);
+  font-family:'Cinzel', serif; font-size:0.95rem; font-weight:700;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+}
+.s-body strong {
+  font-family:'Cinzel', serif; font-size:0.82rem;
+  color:var(--ink); letter-spacing:0.06em;
+  text-transform:uppercase; display:block; margin-bottom:3px;
+}
+.s-body p { font-size:0.9rem; }
+
+/* ── ACTION LIST ── */
+.action-list { list-style:none; margin:16px 0; }
+.action-list li {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:13px 0; border-bottom:1px solid var(--border-light);
+}
+.action-list li:last-child { border-bottom:none; }
+.al-icon { font-size:1.2rem; flex-shrink:0; width:28px; text-align:center; padding-top:2px; }
+.al-label {
+  font-family:'Cinzel', serif; font-size:0.73rem; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--gold-deep); margin-bottom:4px; display:block;
+}
+.al-body { font-size:0.92rem; color:var(--ink-mid); }
+
+/* ── RARITY BADGE ── */
+.badge {
+  display:inline-block; font-family:'Cinzel', serif;
+  font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase;
+  padding:2px 8px; border-radius:1px; margin-left:6px;
+  vertical-align:middle;
+}
+.badge-unique { background:var(--gold-deep); color:var(--parchment); }
+.badge-limited { background:var(--ink-soft); color:var(--parchment-dk); }
+.badge-common { background:var(--parchment-dk); color:var(--ink-soft); border:1px solid var(--border); }
+
+/* ── SCORING GRID ── */
+.score-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin:20px 0; }
+.sc-item {
+  display:flex; gap:12px; align-items:flex-start;
+  background:var(--parchment-md); border:1px solid var(--border);
+  padding:14px;
+}
+.sc-item .sc-icon { font-size:1.3rem; flex-shrink:0; }
+.sc-item .sc-name {
+  font-family:'Cinzel', serif; font-size:0.7rem;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--gold-deep); margin-bottom:3px; display:block;
+  font-weight:700;
+}
+.sc-item p { font-size:0.87rem; }
+
+/* ── GLORY TABLE ── */
+.glory-table td:first-child { font-family:'Cinzel',serif; font-weight:600; white-space:nowrap; }
+.glory-table td:nth-child(2) { font-family:'Cinzel',serif; color:var(--gold-deep); font-weight:700; }
+
+/* ── SETUP STEPS ── */
+.setup-steps { counter-reset:setup; }
+.setup-step {
+  display:flex; gap:18px; margin-bottom:22px; align-items:flex-start;
+}
+.ss-num {
+  flex-shrink:0; width:34px; height:34px;
+  border:2px solid var(--gold); color:var(--gold);
+  font-family:'Cinzel', serif; font-size:0.9rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+.ss-body strong {
+  font-family:'Cinzel', serif; font-size:0.82rem;
+  letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--ink); display:block; margin-bottom:4px;
+}
+.ss-body p { font-size:0.9rem; }
+
+/* ── QUICK REF GRID ── */
+.qr-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin-top:20px; }
+.qr-card {
+  background:var(--ink); color:var(--parchment);
+  border:1px solid var(--gold-deep); padding:18px 16px;
+}
+.qr-card h4 {
+  color:var(--gold-pale); margin-top:0; margin-bottom:10px;
+  font-size:0.72rem; letter-spacing:0.14em;
+  border-bottom:1px solid var(--gold-deep); padding-bottom:8px;
+}
+.qr-card ul { list-style:none; }
+.qr-card li {
+  padding:4px 0; border-bottom:1px solid rgba(201,168,76,0.1);
+  font-size:0.87rem; color:var(--parchment-dk); line-height:1.5;
+}
+.qr-card li:last-child { border-bottom:none; }
+.qr-card li strong { color:var(--gold-pale); font-weight:600; }
+
+/* ── COMPONENT TABLE ── */
+.comp-table td:first-child { font-family:'Cinzel',serif; font-size:0.82rem; letter-spacing:0.04em; font-weight:600; }
+.comp-table td:nth-child(2) { font-family:'Cinzel',serif; font-size:0.9rem; color:var(--gold-deep); font-weight:700; text-align:center; }
+
+/* ── TIEBREAKER LIST ── */
+.tiebreaker { counter-reset:tb; list-style:none; margin:14px 0; }
+.tiebreaker li {
+  counter-increment:tb; display:flex; gap:14px;
+  padding:8px 0; border-bottom:1px solid var(--border-light);
+  font-size:0.92rem; align-items:center;
+}
+.tiebreaker li::before {
+  content:counter(tb);
+  flex-shrink:0; width:28px; height:28px;
+  background:var(--gold); color:var(--ink);
+  font-family:'Cinzel',serif; font-weight:700; font-size:0.82rem;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+}
+
+/* ── BALANCE TAG ── */
+.v6-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--gold);
+  background:rgba(139,105,20,0.1); border:1px solid var(--border);
+  padding:3px 9px; margin-bottom:10px;
+}
+
+/* ── FOOTER ── */
+.footer {
+  background:var(--ink); color:var(--parchment);
+  text-align:center; padding:48px 30px 36px;
+  position:relative; z-index:1;
+}
+.footer-title {
+  font-family:'Cinzel Decorative', serif;
+  font-size:2rem; color:var(--gold-pale); letter-spacing:0.1em;
+  margin-bottom:10px; display:block;
+}
+.footer p {
+  font-family:'Cinzel',serif; font-size:0.65rem;
+  letter-spacing:0.18em; color:rgba(201,168,76,0.5);
+  text-transform:uppercase; line-height:2;
+}
+.footer-rule {
+  width:200px; height:1px; margin:18px auto;
+  background:linear-gradient(90deg,transparent,var(--gold-bright),transparent);
+}
+
+/* ── SCROLL BAR (webkit) ── */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--parchment-dk); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+/* ══════════════════════════════
+   PRINT STYLES
+══════════════════════════════ */
+@media print {
+  .cover { min-height:auto; page-break-after:always; }
+  .sidebar { display:none; }
+  .book-wrap { display:block; }
+  .main-content { padding:30px; }
+  section { page-break-inside:avoid; }
+  body { background:white; }
+}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width:720px) {
+  .book-wrap { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  .main-content { padding:36px 24px 60px; }
+  .res-trio { grid-template-columns:1fr; }
+  .domain-grid, .stat-row, .score-grid, .qr-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     COVER
+══════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-glow"></div>
+  <div class="cover-stars"></div>
+  <div class="cover-inner">
+    <span class="cover-tag">Griffin Games · Rulebook v6.0</span>
+    <div class="cover-logo">AGON</div>
+    <div class="cover-subtitle">THE &nbsp; ARCHAIC &nbsp; AGE</div>
+    <div class="cover-rule"></div>
+    <span class="cover-ornament">✦ &nbsp; ⚡ &nbsp; ✦</span>
+    <div class="cover-stats">
+      <span>2–6 Players</span>
+      <span>45–80 Min</span>
+      <span>Engine Builder · Battle</span>
+      <span>Mythology</span>
+    </div>
+    <div class="cover-stats" style="margin-top:8px;">
+      <span>5 Domains</span>
+      <span>60 Unique Card Types</span>
+      <span>Gods &amp; Demi-Gods: 1 Copy Each</span>
+    </div>
+    <div class="cover-version">Final Edition · Balance v6.0 · No Journeys / Themes / Traditions</div>
+  </div>
+  <div class="cover-scroll-hint">▾ &nbsp; Open Rulebook &nbsp; ▾</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     BOOK LAYOUT
+══════════════════════════════════════════════ -->
+<div class="book-wrap">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <span class="sidebar-logo">AGON</span>
+    <span class="sidebar-ver">Rulebook v6.0</span>
+    <hr/>
+    <span class="nav-section-label">Core Rules</span>
+    <a href="#overview">Overview</a>
+    <a href="#laps">Laps &amp; Rounds</a>
+    <a href="#resources">Resources</a>
+    <a href="#domains">The Five Domains</a>
+    <a href="#turn">Your Turn</a>
+    <hr/>
+    <span class="nav-section-label">Card Systems</span>
+    <a href="#weapons">Weapons</a>
+    <a href="#battle">Battle System</a>
+    <a href="#monsters">Monsters</a>
+    <a href="#cards">All Cards</a>
+    <hr/>
+    <span class="nav-section-label">Goals &amp; End Game</span>
+    <a href="#quests">Quest Cards</a>
+    <a href="#goals">Round Goals</a>
+    <a href="#scoring">Scoring</a>
+    <hr/>
+    <span class="nav-section-label">Reference</span>
+    <a href="#setup">Setup</a>
+    <a href="#components">Components</a>
+    <a href="#ref">Quick Reference</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ─── OVERVIEW ─── -->
+    <section id="overview">
+      <div class="section-header">
+        <span class="section-num">I</span>
+        <h2>Overview</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p class="lead">A competitive engine-building and battle game set in mythological Greece. Build your divine engine, outmanoeuvre your rivals, and earn the most Patron Points to claim victory in the great Agon.</p>
+
+      <p>Players summon Spirits, recruit Demi-Gods, call upon the twelve Olympians, unleash Monsters, and forge Weapons. Every God, Demi-God, and Monster card exists as a <strong>single copy</strong>. Once someone acquires it, it is locked in their engine for the rest of the game. That scarcity is the spine of every decision.</p>
+
+      <div class="stat-row">
+        <div class="stat-box"><span class="n">6</span><span class="l">Rounds (2–4P)</span></div>
+        <div class="stat-box"><span class="n">5</span><span class="l">Rounds (5–6P)</span></div>
+        <div class="stat-box"><span class="n">2</span><span class="l">Actions / Turn</span></div>
+        <div class="stat-box"><span class="n">5</span><span class="l">Domains</span></div>
+        <div class="stat-box"><span class="n">60</span><span class="l">Card Types</span></div>
+        <div class="stat-box"><span class="n">10+</span><span class="l">PP Sources</span></div>
+      </div>
+
+      <h3>Card Rarity</h3>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Copies</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Spirit <span class="badge badge-common">Common</span></td><td>4 each (80 total)</td><td>Multiple players can hold the same Spirit. Engine ramp and domain synergy.</td></tr>
+          <tr><td>Weapon <span class="badge badge-limited">Limited</span></td><td>2 each (16 total)</td><td>Two players can hold the same Weapon. Dual-use: passive engine bonus or battle tool.</td></tr>
+          <tr><td>Demi-God <span class="badge badge-unique">Unique</span></td><td>1 each (8 total)</td><td>Once acquired, no other player can ever obtain it. High draft priority.</td></tr>
+          <tr><td>God <span class="badge badge-unique">Unique</span></td><td>1 each (12 total)</td><td>Summoned from a face-down deck using Ichor. Reveal 2, keep 1.</td></tr>
+          <tr><td>Monster <span class="badge badge-unique">Unique</span></td><td>1 each (12 total)</td><td>Consumed on use. Gone from the game permanently. Instant or deploy.</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="ornament">· · ✦ · ·</div>
+
+      <h3>Objective</h3>
+      <p>The player with the most <strong>Patron Points (PP)</strong> when the final round ends wins. PP comes from converting resources at the Oracle, completing quest cards, winning battles, scoring round goals, and the end-game value of your engine. Track your PP on the shared score track or with PP tokens.</p>
+    </section>
+
+    <!-- ─── LAPS & ROUNDS ─── -->
+    <section id="laps">
+      <div class="section-header">
+        <span class="section-num">II</span>
+        <h2>Laps &amp; Rounds</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <h3>Why Laps Exist</h3>
+      <p>A round is divided into laps. In each lap, every player takes one full turn (2 actions). After all laps are complete, the round goal is scored and the round ends. Laps give the engine time to compound, allow players room to recover, and make the game reactive rather than a sequence of independent turns with no interplay.</p>
+
+      <h3>Player Count &amp; Lap Table</h3>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Players</th><th>Laps / Round</th><th>Rounds</th><th>Approx. Time</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>3</td><td>6</td><td>60–70 min</td></tr>
+          <tr><td>3</td><td>3</td><td>6</td><td>75–90 min</td></tr>
+          <tr><td>4</td><td>2</td><td>6</td><td>70–80 min</td></tr>
+          <tr><td>5–6</td><td>2</td><td>5</td><td>70–80 min</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Lap Order</h3>
+      <p>Turns alternate within each lap. The player holding the first-player marker goes first in every lap of that round. Example for 2 players with 3 laps:</p>
+      <div class="box gold">
+        <p><strong>Lap 1:</strong> Player 1 (2 actions) → Player 2 (2 actions)</p>
+        <p><strong>Lap 2:</strong> Player 1 (2 actions) → Player 2 (2 actions)</p>
+        <p><strong>Lap 3:</strong> Player 1 (2 actions) → Player 2 (2 actions)</p>
+        <p style="margin-top:8px;"><strong>End of Round:</strong> Score the goal. Pass first-player marker clockwise.</p>
+      </div>
+
+      <h3>Per Round vs. On Your Turn</h3>
+      <div class="box">
+        <div class="box-label">Clarification</div>
+        <p><strong>Per Round</strong> — fires exactly once at Step 1 (engine phase), before any laps begin. A 3-lap round still triggers this only once.</p>
+        <p style="margin-top:10px;"><strong>On Your Turn</strong> — fires during your individual 2-action turn. In a 3-lap round, "on your turn" effects can fire up to 3 times per player. When in doubt: did this text say "per round" or did it say "on your turn"? That distinction is definitive.</p>
+      </div>
+
+      <h3>Full Round Sequence</h3>
+      <div class="steps">
+        <div class="step"><div class="s-num">1</div><div class="s-body"><strong>Engines Fire</strong><p>All players simultaneously collect resources from every card in their engine. Happens once before any laps begin.</p></div></div>
+        <div class="step"><div class="s-num">2</div><div class="s-body"><strong>Monster Afflictions Fire</strong><p>Every deployed monster's effect triggers once for its target. Targets may pay the removal cost here as a free action before their first lap.</p></div></div>
+        <div class="step"><div class="s-num">3</div><div class="s-body"><strong>Goal Reveal</strong><p>If the round goal is not yet visible, flip it face-up now. All players see the objective.</p></div></div>
+        <div class="step"><div class="s-num">4</div><div class="s-body"><strong>Laps</strong><p>Players alternate turns within each lap for the correct number of laps. Each turn is 2 actions. Free actions are available at any point during your own turn.</p></div></div>
+        <div class="step"><div class="s-num">5</div><div class="s-body"><strong>Score the Goal</strong><p>After the final lap, resolve the round goal. The qualifying player earns the PP. Apply the tie rule if needed. Discard the goal card.</p></div></div>
+        <div class="step"><div class="s-num">6</div><div class="s-body"><strong>Pass First Player</strong><p>The marker moves clockwise. Omen Tokens, Glory Track positions, and all engine cards carry over to the next round.</p></div></div>
+      </div>
+    </section>
+
+    <!-- ─── RESOURCES ─── -->
+    <section id="resources">
+      <div class="section-header">
+        <span class="section-num">III</span>
+        <h2>Resources</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <div class="res-trio">
+        <div class="res-block">
+          <span class="res-sym">🟡</span>
+          <div class="res-name">Ambrosia</div>
+          <p>The common currency. Acquired at Olympus, from Spirits, and many card effects. Used to buy cards, pay costs, and convert at the Oracle.</p>
+          <div class="res-rate">2 Ambrosia = 1 PP</div>
+        </div>
+        <div class="res-block">
+          <span class="res-sym">🔵</span>
+          <div class="res-name">Nectar</div>
+          <p>The premium resource. More valuable at the Oracle. Primarily generated by God cards and sea-domain Spirit cards.</p>
+          <div class="res-rate">1 Nectar = 2 PP</div>
+        </div>
+        <div class="res-block">
+          <span class="res-sym">🔴</span>
+          <div class="res-name">Ichor</div>
+          <p>Divine blood. Rare. Required to deploy monsters, summon Gods, forge certain weapons, and activate specific powers. You start with none.</p>
+          <div class="res-rate">1 Ichor = 3 PP</div>
+        </div>
+      </div>
+
+      <div class="box red">
+        <div class="box-label">⚑ Critical Note</div>
+        <p><strong>Ichor scarcity is intentional.</strong> It only comes from specific card passives once your engine is built. Plan your Ichor engine early — without it you cannot summon Gods or deploy the strongest Monsters.</p>
+      </div>
+
+      <h3>Resource Conversion</h3>
+      <p>Resources are converted to Patron Points at Apollo's Oracle Fire domain during your turn. You may mix resource types freely in a single visit. There is no per-turn conversion limit — spend as much as you can afford. Engine 🔱 cards add +1 PP per Oracle visit on top of conversion rates.</p>
+
+      <h3>Omen Tokens</h3>
+      <p>You gain <strong>1 Omen Token per turn</strong> in which you visit the Oracle (not per Oracle visit within a turn). At game end, every 3 Omen Tokens you hold are worth <strong>+2 PP</strong>. Omen Tokens are not a resource — they cannot be spent or converted mid-game.</p>
+    </section>
+
+    <!-- ─── DOMAINS ─── -->
+    <section id="domains">
+      <div class="section-header">
+        <span class="section-num">IV</span>
+        <h2>The Five Domains</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>Each turn you choose 2 actions from the five domains. You may visit the same domain twice in one turn. Domain Mastery (most visits at game end) earns bonus PP — see Scoring.</p>
+
+      <div class="domain-grid">
+
+        <div class="d-card" data-glyph="🌑">
+          <span class="d-icon">🌑</span>
+          <div class="d-name">Hades' Eternal Dark</div>
+          <div class="d-flavor">"Descend with Charon"</div>
+          <p>Pay a card's cost to acquire any face-up card from the Underworld market. The market always shows <strong>4 Spirits, 2 Demi-Gods, 2 Monsters, 1 Weapon</strong>. Refills immediately after each purchase.</p>
+          <p>To <strong>summon a God</strong>: pay the God's Ichor cost, reveal the top 2 God cards, keep 1, return the other to the bottom of the God deck.</p>
+          <p class="d-restrict">⛔ Blocked while Cerberus is deployed on you.</p>
+        </div>
+
+        <div class="d-card" data-glyph="⚡">
+          <span class="d-icon">⚡</span>
+          <div class="d-name">Zeus' Eternal Throne</div>
+          <div class="d-flavor">"Receive Divine Favour"</div>
+          <p>Choose one: <strong>2 Ambrosia, 1 Nectar, or 1 Ichor.</strong> Each ⚡ card in your engine adds +1 Ambrosia when you choose the Ambrosia option (bonuses do not apply to Nectar or Ichor choices).</p>
+          <div class="d-balance">
+            <span class="bl">⚖ v6 Balance — Zeus in Engine</span>
+            Once per round (not per lap, not per opponent visit), the Zeus card owner may reduce <em>one chosen opponent's</em> Ambrosia gain at this domain by 1 (minimum 1 Ambrosia total). The owner must declare this before the target resolves their Olympus action. The same opponent cannot be targeted two rounds in a row.
+          </div>
+        </div>
+
+        <div class="d-card" data-glyph="🔥">
+          <span class="d-icon">🔥</span>
+          <div class="d-name">Apollo's Oracle Fire</div>
+          <div class="d-flavor">"Consult the Oracle"</div>
+          <p>Convert any combination of resources to Patron Points:</p>
+          <p><strong>2 Ambrosia = 1 PP &nbsp;·&nbsp; 1 Nectar = 2 PP &nbsp;·&nbsp; 1 Ichor = 3 PP</strong></p>
+          <p>Each 🔱 card in your engine adds +1 PP per visit. Gain <strong>1 Omen Token</strong> this turn (once per turn regardless of how many Oracle visits you make).</p>
+          <p class="d-restrict">⛔ Blocked while the Sphinx is deployed on you.</p>
+        </div>
+
+        <div class="d-card" data-glyph="🔨">
+          <span class="d-icon">🔨</span>
+          <div class="d-name">Hephaestus' Forge</div>
+          <div class="d-flavor">"Commission the Smith"</div>
+          <p>Pay a weapon's cost to acquire it from the Forge market. Choose immediately: <strong>equip</strong> it (move to engine for its passive bonus) or <strong>hold</strong> it in hand (for battle play or one-time activation later). The Forge always shows <strong>3 Weapons</strong>, refilling instantly.</p>
+          <p><em>If the Weapon deck is exhausted, visiting the Forge gives 1 Ambrosia instead.</em></p>
+        </div>
+
+        <div class="d-card" data-glyph="⚔️">
+          <span class="d-icon">⚔️</span>
+          <div class="d-name">Ares' Blood Colosseum</div>
+          <div class="d-flavor">"Enter the Fray"</div>
+          <p>Choose one of the following:</p>
+          <p><strong>a)</strong> Deploy a Monster — pay 1 Ichor (2 for Typhon), place it face-up in front of any opponent with fewer than 2 deployed monsters.</p>
+          <p><strong>b)</strong> Challenge an opponent to a battle (see Battle System).</p>
+          <p><strong>c)</strong> Activate a weapon's one-time ability (see Weapon Rules).</p>
+          <p>Maximum <strong>2 monsters on any one player</strong> at a time.</p>
+          <p class="d-restrict">⛔ Aphrodite protects one chosen opponent per round from being targeted here.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── YOUR TURN ─── -->
+    <section id="turn">
+      <div class="section-header">
+        <span class="section-num">V</span>
+        <h2>Your Turn</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>Take <strong>2 actions</strong> in any combination. You may visit the same domain twice.</p>
+
+      <h3>Actions</h3>
+      <ul class="action-list">
+        <li><div class="al-icon">🌑</div><div><span class="al-label">Hades — Acquire a Card</span><div class="al-body">Pay the card's printed cost. Take it into your hand. The market refills instantly. To summon a God, pay its Ichor cost: reveal the top 2 God cards, keep 1, return the other to the bottom of the deck.</div></div></li>
+        <li><div class="al-icon">⚡</div><div><span class="al-label">Olympus — Gain Resources</span><div class="al-body">Choose: 2 Ambrosia, 1 Nectar, or 1 Ichor. ⚡ engine cards add +1 Ambrosia when you choose Ambrosia. Zeus' active bonus applies as per v6 rule (once per round, one opponent, no consecutive targeting).</div></div></li>
+        <li><div class="al-icon">▶</div><div><span class="al-label">Play a Card — Build Your Engine</span><div class="al-body">Move any card from your hand to your engine. Trigger its <em>On Play</em> effect immediately. Starting from the next round's engine phase, it produces automatically. No additional cost to play.</div></div></li>
+        <li><div class="al-icon">🔥</div><div><span class="al-label">Oracle's Fire — Score PP</span><div class="al-body">Convert resources to PP at the Oracle rates (2 Amb = 1 PP · 1 Nec = 2 PP · 1 Ich = 3 PP). 🔱 engine cards add +1 PP per visit. Gain 1 Omen Token this turn (once per turn, not per visit).</div></div></li>
+        <li><div class="al-icon">🔨</div><div><span class="al-label">Forge — Acquire a Weapon</span><div class="al-body">Pay the weapon's cost. Take it from the Forge. Immediately decide: equip it to your engine (passive bonus from next engine phase) or keep it in hand (for battle or activation).</div></div></li>
+        <li><div class="al-icon">⚔️</div><div><span class="al-label">Colosseum — Deploy, Battle, or Activate</span><div class="al-body">Deploy a Monster (1 Ichor; 2 for Typhon), challenge an opponent to battle, or activate a weapon's one-time ability. Only one of these per Colosseum action. See respective sections for full rules.</div></div></li>
+      </ul>
+
+      <h3>Free Actions</h3>
+      <p>These cost no action slot. Use them at any point during your own turn only.</p>
+      <ul class="action-list">
+        <li><div class="al-icon">📜</div><div><span class="al-label">Complete a Quest</span><div class="al-body">Reveal a quest card from your hand when its condition is met. Collect the PP reward immediately. Limit: 2 completed quests per player per game.</div></div></li>
+        <li><div class="al-icon">✕</div><div><span class="al-label">Emergency Discard</span><div class="al-body">Discard 1 card from your hand and take 1 Ambrosia from the supply. Exception: the Phoenix returns to your hand instead of the discard pile.</div></div></li>
+        <li><div class="al-icon">🛡</div><div><span class="al-label">Remove a Monster</span><div class="al-body">Pay the removal cost printed on a monster deployed on you. Claim the card as a trophy — its printed PP value counts at game end. The monster is permanently removed from the game.</div></div></li>
+        <li><div class="al-icon">🏛</div><div><span class="al-label">Sanctuary <em>(once per game)</em></span><div class="al-body">If you begin your turn with 0 resources and 0 cards in hand, you may declare Sanctuary. Gain 2 Ambrosia from the supply. Each player may use this only once per game.</div></div></li>
+      </ul>
+    </section>
+
+    <!-- ─── WEAPONS ─── -->
+    <section id="weapons">
+      <div class="section-header">
+        <span class="section-num">VI</span>
+        <h2>Weapons</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>Weapons are dual-purpose cards: they provide a passive bonus when equipped in your engine and can also be played in battles. Each weapon type has 2 copies — two players may hold the same weapon simultaneously.</p>
+
+      <h3>Two States</h3>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>State</th><th>How to Enter</th><th>What It Does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Equipped</strong> (in engine)</td><td>Use a Play Card action to move it from hand to engine.</td><td>Gives passive bonus each engine phase. Can still be played in battle (returns to engine after).</td></tr>
+          <tr><td><strong>In Hand</strong></td><td>Purchased from Forge and held back, or drawn at setup.</td><td>No passive bonus. Can be played face-down in a battle (returns to hand after) or activated for its one-time ability (then discarded).</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Activating a Weapon</h3>
+      <p>Using a weapon's one-time ability is your Colosseum action for that turn. You may activate from hand or from your engine. Either way, the weapon is discarded after use. You cannot activate a weapon that you already played in a battle on the same turn.</p>
+
+      <div class="box gold">
+        <div class="box-label">⚖ v6 Balance — Weapon Damage Cap</div>
+        <p>Combined weapon bonuses in a single battle are <strong>capped at +4 total</strong> (the sum of both weapons played, across both sides combined). Any weapon effect that would push the combined total above +4 is treated as +4. This prevents weapon stacking from making battles feel predetermined.</p>
+      </div>
+
+      <h3>Dual Auto-Win Rule</h3>
+      <p>If both players play a weapon with an auto-win effect in the same battle, treat the result as a <strong>tie</strong>. Both players lose 1 Ambrosia. Neither weapon is discarded — both return to their previous state (engine or hand).</p>
+
+      <h3>Weapon End-Game Value</h3>
+      <p>Weapons equipped in your engine at game end are worth <strong>1–3 PP</strong> each (printed on the card). Weapons held in hand at game end have no PP value.</p>
+    </section>
+
+    <!-- ─── BATTLE ─── -->
+    <section id="battle">
+      <div class="section-header">
+        <span class="section-num">VII</span>
+        <h2>Battle System</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>Initiating a battle is a Colosseum action. Battles cannot target a player who is protected by Aphrodite this round. God and Demi-God cards in engines cannot be targeted or stolen — only resources and direct effects.</p>
+
+      <h3>Battle Sequence</h3>
+      <div class="steps">
+        <div class="step"><div class="s-num">1</div><div class="s-body"><strong>Declare a Target</strong><p>Name the opponent you are challenging. They must not have Aphrodite's protection this round.</p></div></div>
+        <div class="step"><div class="s-num">2</div><div class="s-body"><strong>Choose Weapons (Secret)</strong><p>Both players simultaneously and secretly choose 0 or 1 weapon from their hand or engine. Do not reveal until both have chosen.</p></div></div>
+        <div class="step"><div class="s-num">3</div><div class="s-body"><strong>Reveal &amp; Calculate</strong><p>Reveal simultaneously. Attacker base: <strong>2</strong>. Defender base: <strong>1</strong>. Add weapon bonuses from both sides. Combined weapon bonus cap: <strong>+4 total</strong>. Higher final total wins.</p></div></div>
+        <div class="step"><div class="s-num">4</div><div class="s-body"><strong>Resolve Outcome</strong><p>Apply the result below. Any weapon played in battle returns to its previous state unless the dual auto-win tie applies.</p></div></div>
+      </div>
+
+      <h3>Outcomes</h3>
+      <div class="box dark">
+        <p><strong>Attacker Wins:</strong> Steal 2 Ambrosia from the defender. Gain 1 PP. Advance 1 on the Glory Track.</p>
+        <p style="margin-top:8px;"><strong>Defender Wins:</strong> Defender gains 1 PP. Attacker loses 1 Ambrosia to the supply (not to the defender).</p>
+        <p style="margin-top:8px;"><strong>Tie:</strong> Both players lose 1 Ambrosia to the supply. No PP is awarded to either player.</p>
+      </div>
+
+      <h3>The Glory Track</h3>
+      <div class="tbl-wrap">
+      <table class="glory-table">
+        <thead><tr><th>Glory Score</th><th>PP at Game End</th><th>How to Earn Glory</th></tr></thead>
+        <tbody>
+          <tr><td>0 – 2</td><td>+0 PP</td><td>+1 per battle won · +1 per quest completed</td></tr>
+          <tr><td>3 – 4</td><td>+2 PP</td><td>+1 per monster deployed that survives 2+ rounds</td></tr>
+          <tr><td>5 – 6</td><td>+4 PP</td><td>Heracles, Atalanta, and Ares engine bonuses each add +1 extra Glory per trigger</td></tr>
+          <tr><td>7+</td><td>+6 PP</td><td>Dionysus' Divine Madness or Zeus' Storm's Wrath awards +2 Glory when used</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>Glory Track position is public. It carries over between rounds and is only ever increased, never decreased. It is one of the game's tiebreakers.</p>
+    </section>
+
+    <!-- ─── MONSTERS ─── -->
+    <section id="monsters">
+      <div class="section-header">
+        <span class="section-num">VIII</span>
+        <h2>Monsters</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>Every Monster card is unique: one copy, consumed on use, permanently removed from the game. Monsters are the game's primary disruption tool — powerful but irreversible.</p>
+
+      <h3>Two Ways to Use a Monster</h3>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Cost</th><th>Effect</th><th>Counter?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Instant Use</strong></td><td>Colosseum action only (no Ichor)</td><td>Play from hand. Instant effect fires immediately. Card is discarded.</td><td>Cannot be countered.</td></tr>
+          <tr><td><strong>Deploy</strong></td><td>Colosseum action + 1 Ichor (2 for Typhon)</td><td>Place face-up in front of any opponent. Apply a duration token. Effect fires once per round at Step 2.</td><td>Can be removed by target (they gain trophy).</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Deploy Effect Timing</h3>
+      <p>Deployed monster effects fire <strong>once per round at Step 2</strong>, before any laps begin. They do not fire again during individual turns. A 2-round monster fires twice total: once at Step 2 of the round it was deployed, and once at Step 2 of the following round.</p>
+      <div class="box red">
+        <div class="box-label">⚑ Global Timing Rule</div>
+        <p>"Fires once per round at Step 2" applies to <em>every</em> monster in the game. There is no monster whose deploy effect fires per-turn. This is the universal standard — no exceptions.</p>
+      </div>
+
+      <h3>Removal &amp; Trophies</h3>
+      <p>The target may pay the printed removal cost during Step 2 (before their first lap of the round) or at any point during their own turn as a free action. Upon paying, they claim the monster card as a <strong>trophy</strong>. Trophies count for their printed PP value at game end.</p>
+
+      <h3>Natural Expiry</h3>
+      <p>When a monster's duration runs out without the target paying the removal cost, the monster card is discarded permanently. No trophy is awarded. The monster is gone.</p>
+
+      <h3>Monster Safety Rules</h3>
+      <div class="box">
+        <p><strong>Two-Monster Cap:</strong> A maximum of 2 monsters may be deployed on any single player at a time. Deploying a third requires removing one of the existing two first — it expires immediately with no trophy for anyone.</p>
+        <p style="margin-top:10px;"><strong>No Stacking Same-Type Restrictions:</strong> Two monsters that impose the same type of restriction (e.g., both block domain access) do not stack. Only the one with the longer remaining duration is active.</p>
+        <p style="margin-top:10px;"><strong>Sanctuary:</strong> If a player begins their turn with 0 resources and 0 cards in hand, they may declare Sanctuary once per game — gain 2 Ambrosia from the supply as a free action.</p>
+      </div>
+    </section>
+
+    <!-- ─── ALL CARDS ─── -->
+    <section id="cards">
+      <div class="section-header">
+        <span class="section-num">IX</span>
+        <h2>All Cards — 60 Unique Types</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>The full card roster breaks into five categories. Cards marked <strong>Unique</strong> exist as a single copy in the game — once acquired, they cannot be obtained by any other player.</p>
+
+      <h3>Spirits (20 types · 4 copies each)</h3>
+      <p>Spirits are the backbone of every engine. They produce resources during the engine phase, add bonuses at specific domains, and chain with God cards. Each Spirit bears a domain icon (⚡ or 🔱 or other) that determines which engine bonuses it unlocks. Multiple players may hold identical Spirits.</p>
+
+      <h3>Demi-Gods (8 types · 1 copy each) <span class="badge badge-unique">Unique</span></h3>
+      <p>Demi-Gods are high-value engine anchors acquired from the Hades market. Each has an <em>On Play</em> effect and a passive engine bonus. Their unique status makes them contested draft targets. They count for 2–4 PP at game end.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Notable Demi-Gods</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Heracles</strong></td><td>Battle-focused. Engine bonus: +1 Glory per triggered battle ability. Also grants +1 extra Glory to Glory Track triggers.</td></tr>
+          <tr><td><strong>Atalanta</strong></td><td>Speed and quests. Engine bonus: +1 Glory per quest completed. Complements Athena's quest synergy.</td></tr>
+          <tr><td><strong>Others (6)</strong></td><td>Details printed on cards. Each has a unique engine passive and On Play effect worth 2–4 PP at game end.</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Gods (12 types · 1 copy each) <span class="badge badge-unique">Unique</span></h3>
+      <p>The twelve Olympians are summoned from a face-down deck by paying Ichor at Hades' domain. They are the most powerful engine cards — each with a passive and an active ability. All count for 2–4 PP at game end.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>God</th><th>Domain Icon</th><th>Key Passive / Active</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Zeus</strong></td><td>⚡</td><td>Passive: once per round, reduce one chosen opponent's Ambrosia gain at Olympus by 1 (min 1). Cannot target same opponent two rounds in a row.</td></tr>
+          <tr><td><strong>Aphrodite</strong></td><td>—</td><td>Passive: once per round, protect one chosen opponent from being targeted at the Colosseum.</td></tr>
+          <tr><td><strong>Apollo</strong></td><td>🔱</td><td>Passive: +1 PP per Oracle visit. Pairs with 🔱 spirit chains.</td></tr>
+          <tr><td><strong>Dionysus</strong></td><td>—</td><td>Active (Divine Madness): +2 Glory when triggered. See Glory Track.</td></tr>
+          <tr><td><strong>Athena</strong></td><td>—</td><td>Passive: +1 bonus PP per quest you complete.</td></tr>
+          <tr><td><strong>Others (7)</strong></td><td>Varies</td><td>Details printed on cards. Max direct passive income: 4 PP/round (v6 cap).</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box gold">
+        <div class="box-label">⚖ v6 Balance — God &amp; Demi-God PP Cap</div>
+        <p>No single God or Demi-God card may provide more than <strong>4 PP of direct passive income per round</strong>. Effects exceeding this must be converted to conditional bonuses (e.g., "if you control 3+ ⚡ cards") or split between engine-phase and on-play one-time effects. This keeps unique-card power exciting without making them insurmountable once obtained.</p>
+      </div>
+
+      <h3>Monsters (12 types · 1 copy each) <span class="badge badge-unique">Unique</span></h3>
+      <p>Monsters are used instantly or deployed against opponents. Each is permanently consumed on use — gone from the game. Deploy duration and removal costs are printed on the card.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Notable Monsters</th><th>Deploy Effect</th><th>Removal Cost</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cerberus</strong></td><td>Blocks target from visiting Hades domain.</td><td>Printed on card</td></tr>
+          <tr><td><strong>Sphinx</strong></td><td>Blocks target from visiting Oracle domain.</td><td>Printed on card</td></tr>
+          <tr><td><strong>Typhon</strong></td><td>Powerful multi-round effect. Costs 2 Ichor to deploy (not 1).</td><td>Printed on card</td></tr>
+          <tr><td><strong>Others (9)</strong></td><td>Varies — resource drain, glory loss, etc.</td><td>Printed on card</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Weapons (8 types · 2 copies each) <span class="badge badge-limited">Limited</span></h3>
+      <p>Weapons are dual-use cards — equip for passive bonuses or hold for battle and activation. Two copies exist of each type, so two players can hold the same weapon. Equipped weapons count for 1–3 PP at game end. All weapon details — cost, passive bonus, battle bonus, one-time ability — are printed on the card.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Notable Weapons</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Spear of Ares</strong></td><td>Has an auto-win battle effect. Dual auto-win against another auto-win weapon = tie (see Weapon Rules).</td></tr>
+          <tr><td><strong>Others (7)</strong></td><td>Details printed on card. Combined battle bonus capped at +4 total across both sides per battle (v6 rule).</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <!-- ─── QUESTS ─── -->
+    <section id="quests">
+      <div class="section-header">
+        <span class="section-num">X</span>
+        <h2>Quest Cards</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p><strong>15 unique quest types · 2 copies each (30 total).</strong> Quests represent deeds accomplished during the Agon. They reward 2–5 PP each and interact with the Glory Track and card synergies.</p>
+
+      <h3>Setup</h3>
+      <p>Shuffle the quest deck. Deal <strong>3 quest cards</strong> to each player face-down. Each player looks at their 3 cards privately, keeps 2, and returns 1 face-down to the bottom of the quest deck. Your kept quests remain secret until you reveal one.</p>
+
+      <h3>Completing a Quest</h3>
+      <p>During your turn, when the printed condition on one of your quest cards is met, reveal it as a <strong>free action</strong>. Collect the PP reward immediately. The card is set aside face-up. You are limited to completing <strong>2 quests per player per game</strong>.</p>
+
+      <div class="box">
+        <div class="box-label">Quest Synergies</div>
+        <p><strong>Athena</strong> (God card): +1 bonus PP for every quest you complete.</p>
+        <p><strong>Atalanta</strong> (Demi-God card): +1 Glory per quest completed.</p>
+        <p><strong>Glory Track</strong>: Completing a quest earns +1 Glory regardless of its PP reward.</p>
+      </div>
+
+      <h3>Quest Conditions &amp; Rewards</h3>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Example Quest Type</th><th>Condition</th><th>Reward</th></tr></thead>
+        <tbody>
+          <tr><td>Hero of the Arena</td><td>Win 3 or more battles in a single game.</td><td>4 PP + 1 Glory</td></tr>
+          <tr><td>Favoured of the Gods</td><td>Have 3 or more God cards in your engine.</td><td>5 PP</td></tr>
+          <tr><td>Warlord</td><td>Have 2 or more Monsters deployed simultaneously.</td><td>3 PP</td></tr>
+          <tr><td>Smith's Patron</td><td>Have 3 or more Weapons equipped in your engine.</td><td>3 PP</td></tr>
+          <tr><td>Oracle's Disciple</td><td>Convert 10+ resources to PP in a single turn.</td><td>4 PP</td></tr>
+          <tr><td colspan="3" style="color:var(--ink-muted); font-style:italic; font-size:0.87rem;">Full list of all 15 quest types is printed on the cards. Rewards range from 2 PP to 5 PP.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <!-- ─── ROUND GOALS ─── -->
+    <section id="goals">
+      <div class="section-header">
+        <span class="section-num">XI</span>
+        <h2>Round Goals</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p><strong>8 unique round goal cards · 1 copy each.</strong> One goal is revealed per round. The qualifying player earns PP after the final lap of that round. Goals are shuffled at the start of the game, so the full order is unknown to all players — strategic planning works within each round, not across the whole game.</p>
+
+      <h3>Scoring a Round Goal</h3>
+      <p>After the final lap of a round, check the goal condition. The player who best meets the condition wins the PP. If tied, consult the tie rule printed on the card (typically: most Glory, then most Omen Tokens). Discard the goal card — it does not reenter play.</p>
+
+      <div class="box gold">
+        <div class="box-label">⚖ v6 Balance — Round Goal Ceiling</div>
+        <p>No single round goal may award more than <strong>5 PP</strong>. Goals that depend on cumulative engine size (e.g., "most cards in engine," "most resources held") award only <strong>3 PP</strong> to reduce their snowball potential for players already in the lead.</p>
+      </div>
+
+      <h3>Round Goal Examples</h3>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Goal</th><th>Condition</th><th>PP</th><th>Tie Rule</th></tr></thead>
+        <tbody>
+          <tr><td>Supremacy</td><td>Most battles won this round.</td><td>4 PP</td><td>Higher Glory Track position.</td></tr>
+          <tr><td>Divine Favour</td><td>Most God cards in engine at round end.</td><td>5 PP</td><td>Most Omen Tokens.</td></tr>
+          <tr><td>Engine of War</td><td>Most cards in engine at round end.</td><td>3 PP</td><td>Higher Glory Track position.</td></tr>
+          <tr><td>Hoarder</td><td>Most total resources at round end.</td><td>3 PP</td><td>Most Omen Tokens.</td></tr>
+          <tr><td>Keeper of Trophies</td><td>Most monster trophies at round end.</td><td>4 PP</td><td>Higher Glory Track.</td></tr>
+          <tr><td colspan="4" style="color:var(--ink-muted); font-style:italic; font-size:0.87rem;">Full list of all 8 round goals is printed on the cards. Rewards range from 3 PP to 5 PP.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <!-- ─── SCORING ─── -->
+    <section id="scoring">
+      <div class="section-header">
+        <span class="section-num">XII</span>
+        <h2>Scoring</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>PP is accumulated throughout the game. At the end of the final round, add all remaining PP sources together. The player with the highest total wins.</p>
+
+      <div class="score-grid">
+        <div class="sc-item"><div class="sc-icon">🔥</div><div><span class="sc-name">Oracle's Fire</span><p>2 Amb = 1 PP · 1 Nec = 2 PP · 1 Ich = 3 PP. Scored continuously during play.</p></div></div>
+        <div class="sc-item"><div class="sc-icon">🏆</div><div><span class="sc-name">Round Goals</span><p>3–5 PP per round. 5–6 rounds means up to 25–30 PP from goals alone.</p></div></div>
+        <div class="sc-item"><div class="sc-icon">📜</div><div><span class="sc-name">Quest Cards</span><p>2–5 PP each. Up to 2 quests per player. Athena adds +1 PP per quest.</p></div></div>
+        <div class="sc-item"><div class="sc-icon">✨</div><div><span class="sc-name">Card End Values</span><p>Spirits: 1–2 PP · Demi-Gods: 2–4 PP · Gods: 2–4 PP. Counted at game end.</p></div></div>
+        <div class="sc-item"><div class="sc-icon">⚔️</div><div><span class="sc-name">Battle Wins</span><p>+1 PP per Colosseum battle won (in addition to the 2 Ambrosia stolen).</p></div></div>
+        <div class="sc-item"><div class="sc-icon">🗡️</div><div><span class="sc-name">Weapons in Engine</span><p>1–3 PP per equipped weapon at game end. Weapons in hand have no end value.</p></div></div>
+        <div class="sc-item"><div class="sc-icon">🌟</div><div><span class="sc-name">Glory Track</span><p>+2 PP at 3–4 · +4 PP at 5–6 · +6 PP at 7+. Position never decreases.</p></div></div>
+        <div class="sc-item"><div class="sc-icon">🔮</div><div><span class="sc-name">Omen Tokens</span><p>+2 PP per 3 tokens held. Max 1 token gained per turn (not per Oracle visit).</p></div></div>
+        <div class="sc-item"><div class="sc-icon">🏛️</div><div><span class="sc-name">Domain Mastery</span><p>+2 PP per dominated domain. <strong>Cap: max 3 domains per player.</strong> See note below.</p></div></div>
+        <div class="sc-item"><div class="sc-icon">👁️</div><div><span class="sc-name">Monster Trophies</span><p>Each trophy card counts for its printed PP value at game end.</p></div></div>
+      </div>
+
+      <div class="box gold">
+        <div class="box-label">⚖ v6 Balance — Domain Mastery Cap</div>
+        <p>A single player may claim a maximum of <strong>3 domains</strong> at game end, regardless of actual visit counts. If a player has the most visits in 4 or 5 domains, they still only score the top 3. The 4th and 5th most-visited domains are awarded to the player with the next highest visit count in those domains. This prevents a "domain sweep" strategy from dominating and keeps all scoring paths competitive.</p>
+      </div>
+
+      <h3>Tiebreakers</h3>
+      <p>If two or more players are tied on PP at game end, resolve in this order:</p>
+      <ol class="tiebreaker">
+        <li>Most total resources held (Ambrosia + Nectar + Ichor combined).</li>
+        <li>Most God cards in engine.</li>
+        <li>Highest Glory Track position.</li>
+        <li>Most Omen Tokens remaining.</li>
+      </ol>
+    </section>
+
+    <!-- ─── SETUP ─── -->
+    <section id="setup">
+      <div class="section-header">
+        <span class="section-num">XIII</span>
+        <h2>Setup</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>Estimated setup time: 10 minutes. Follow these steps in order before Round 1 begins.</p>
+
+      <div class="setup-steps">
+        <div class="setup-step"><div class="ss-num">1</div><div class="ss-body"><strong>Place the Board</strong><p>Lay out the game board. Identify the five domain areas, the Glory Track, Domain Mastery track, Omen Token area, and the shared score track (0–75).</p></div></div>
+        <div class="setup-step"><div class="ss-num">2</div><div class="ss-body"><strong>Hades Market</strong><p>Shuffle the Spirit, Demi-God, and Monster decks separately. Reveal <strong>4 Spirits, 2 Demi-Gods, and 2 Monsters</strong> face-up in the Underworld market. Place the Weapon from the Hades market slot (1 Weapon) face-up too.</p></div></div>
+        <div class="setup-step"><div class="ss-num">3</div><div class="ss-body"><strong>Forge Market</strong><p>Shuffle the Weapon deck. Reveal <strong>3 Weapons</strong> face-up in the Forge. Return the Weapon deck near the Forge for refills.</p></div></div>
+        <div class="setup-step"><div class="ss-num">4</div><div class="ss-body"><strong>God Deck</strong><p>Shuffle all 12 God cards face-down into a single God deck. Place it near Hades' domain. Gods are not placed in the market — they are summoned when a player pays Ichor at Hades.</p></div></div>
+        <div class="setup-step"><div class="ss-num">5</div><div class="ss-body"><strong>Round Goal Deck</strong><p>Shuffle all 8 Round Goal cards face-down. Place as a deck. Reveal the top card face-up — this is Round 1's goal. Players see it before any turns are taken.</p></div></div>
+        <div class="setup-step"><div class="ss-num">6</div><div class="ss-body"><strong>Quest Cards</strong><p>Shuffle the quest deck (30 cards). Deal <strong>3 quest cards</strong> to each player face-down. Each player privately keeps 2 and returns 1 face-down to the bottom of the quest deck.</p></div></div>
+        <div class="setup-step"><div class="ss-num">7</div><div class="ss-body"><strong>Starting Resources &amp; Cards</strong><p>Give each player: <strong>4 Ambrosia, 1 Nectar,</strong> and deal <strong>2 Spirit cards</strong> from the top of the Spirit deck into each player's hand (not from the market). All players start at position 0 on the Glory Track with 0 Domain Visit cubes placed.</p></div></div>
+        <div class="setup-step"><div class="ss-num">8</div><div class="ss-body"><strong>First Player &amp; Begin</strong><p>The youngest player takes the first-player marker (olive wreath token). They go first in Lap 1 of Round 1. The Agon begins.</p></div></div>
+      </div>
+    </section>
+
+    <!-- ─── COMPONENTS ─── -->
+    <section id="components">
+      <div class="section-header">
+        <span class="section-num">XIV</span>
+        <h2>Component Manifest</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <div class="tbl-wrap">
+      <table class="comp-table">
+        <thead><tr><th>Component</th><th>#</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Spirit Cards</td><td>80</td><td>20 unique types · 4 copies each · Common rarity</td></tr>
+          <tr><td>Demi-God Cards</td><td>8</td><td>8 unique types · 1 copy each · Unique rarity</td></tr>
+          <tr><td>God Cards</td><td>12</td><td>12 unique types · 1 copy each · Unique rarity</td></tr>
+          <tr><td>Monster Cards</td><td>12</td><td>12 unique types · 1 copy each · Consumed on use</td></tr>
+          <tr><td>Weapon Cards</td><td>16</td><td>8 unique types · 2 copies each · Limited rarity</td></tr>
+          <tr><td>Quest Cards</td><td>30</td><td>15 unique types · 2 copies each</td></tr>
+          <tr><td>Round Goal Cards</td><td>8</td><td>1 copy each · Shuffled at game start</td></tr>
+          <tr><td>Ambrosia Tokens</td><td>90</td><td>Yellow · Increased to cover 3-lap rounds</td></tr>
+          <tr><td>Nectar Tokens</td><td>30</td><td>Blue</td></tr>
+          <tr><td>Ichor Tokens</td><td>20</td><td>Red</td></tr>
+          <tr><td>Patron Point Tokens</td><td>100</td><td>Or use the shared score track (0–75)</td></tr>
+          <tr><td>Omen Tokens</td><td>40</td><td>Max 1 gained per turn (not per Oracle visit within a turn)</td></tr>
+          <tr><td>Glory Track Markers</td><td>6</td><td>One per player colour</td></tr>
+          <tr><td>Domain Visit Cubes</td><td>30</td><td>5 per player · Used to track Domain Mastery</td></tr>
+          <tr><td>Duration Tokens</td><td>20</td><td>Placed on deployed monsters to track remaining rounds</td></tr>
+          <tr><td>Protection Tokens</td><td>12</td><td>From Daimon and Aegis · Negates 1 targeted effect</td></tr>
+          <tr><td>Player Boards</td><td>6</td><td>Engine area · Resource storage · Domain reference</td></tr>
+          <tr><td>First-Player Marker</td><td>1</td><td>Olive wreath token</td></tr>
+          <tr><td>Game Board</td><td>1</td><td>5 domains · Round track · Glory track · Domain mastery · Score track 0–75</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p style="margin-top:16px; font-size:0.88rem; color:var(--ink-muted);"><em>Total physical cards: 166 &nbsp;·&nbsp; Unique card types: 60</em></p>
+    </section>
+
+    <!-- ─── QUICK REFERENCE ─── -->
+    <section id="ref">
+      <div class="section-header">
+        <span class="section-num">XV</span>
+        <h2>Quick Reference</h2>
+      </div>
+      <hr class="section-rule"/>
+
+      <p>Tear out or screenshot this page for play. All rules here are final (v6.0).</p>
+
+      <div class="qr-grid">
+        <div class="qr-card">
+          <h4>Your Turn — 2 Actions</h4>
+          <ul>
+            <li>🌑 <strong>Hades:</strong> acquire a card (pay cost)</li>
+            <li>⚡ <strong>Olympus:</strong> 2 Amb / 1 Nec / 1 Ich + engine bonuses</li>
+            <li>▶ <strong>Play:</strong> hand → engine (On Play fires now)</li>
+            <li>🔥 <strong>Oracle:</strong> convert resources → PP + 1 Omen Token</li>
+            <li>🔨 <strong>Forge:</strong> acquire weapon (equip or hold)</li>
+            <li>⚔️ <strong>Colosseum:</strong> deploy monster / battle / activate weapon</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <h4>Free Actions (Any Point, Your Turn)</h4>
+          <ul>
+            <li>📜 Complete a quest when condition is met</li>
+            <li>✕ Discard 1 card → gain 1 Ambrosia</li>
+            <li>🛡 Pay removal cost → claim monster trophy</li>
+            <li>🏛 Sanctuary (once/game): 0 resources + 0 hand → +2 Amb</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <h4>Oracle Conversion Rates</h4>
+          <ul>
+            <li>🟡 2 Ambrosia = 1 PP</li>
+            <li>🔵 1 Nectar = 2 PP</li>
+            <li>🔴 1 Ichor = 3 PP</li>
+            <li>🔱 +1 PP per engine 🔱 card per Oracle visit</li>
+            <li>🔮 3 Omen Tokens = +2 PP (max 1 token / turn)</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <h4>Battle</h4>
+          <ul>
+            <li>Attacker base: <strong>2</strong> · Defender base: <strong>1</strong></li>
+            <li>Weapon bonus cap: <strong>+4 combined</strong> (both sides)</li>
+            <li><strong>Win:</strong> steal 2 Amb + 1 PP + 1 Glory</li>
+            <li><strong>Lose (atk):</strong> −1 Amb to supply</li>
+            <li><strong>Tie:</strong> both −1 Amb · No PP · No Glory</li>
+            <li>Dual auto-win = tie · both weapons kept</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <h4>Monster Rules</h4>
+          <ul>
+            <li>Deploy fires <strong>once per round at Step 2</strong></li>
+            <li>Max 2 monsters on any one player</li>
+            <li>Removal: pay cost → claim trophy</li>
+            <li>Natural expiry: discarded, no trophy</li>
+            <li>Typhon costs 2 Ichor (not 1) to deploy</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <h4>Zeus — Balanced Passive (v6)</h4>
+          <ul>
+            <li>Fires <strong>once per round</strong> (not per lap)</li>
+            <li>Reduces <strong>one chosen opponent's</strong> Ambrosia at Olympus by 1</li>
+            <li>Target still receives <strong>minimum 1 Ambrosia</strong></li>
+            <li><strong>Cannot target same opponent two rounds in a row</strong></li>
+            <li>Must declare before target resolves Olympus action</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <h4>Scoring Summary</h4>
+          <ul>
+            <li>🔥 Oracle conversions during play</li>
+            <li>🏆 Round Goals: 3–5 PP each</li>
+            <li>📜 Quests: 2–5 PP (limit 2/game)</li>
+            <li>✨ Cards at game end: 1–4 PP each</li>
+            <li>⚔️ Battles won: 1 PP each</li>
+            <li>🌟 Glory Track: +2/+4/+6 PP</li>
+            <li>🏛️ Domain Mastery: +2 PP · <strong>max 3 domains</strong></li>
+            <li>👁️ Monster trophies: printed PP value</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <h4>Starting State &amp; Tiebreakers</h4>
+          <ul>
+            <li>Start: <strong>4 Ambrosia + 1 Nectar + 2 Spirit cards</strong></li>
+            <li>Start: 0 Ichor, 0 Glory, 0 Omen Tokens</li>
+            <li style="margin-top:8px; color:var(--gold-pale);"><em>Tiebreakers (in order):</em></li>
+            <li>1. Most total resources</li>
+            <li>2. Most God cards in engine</li>
+            <li>3. Highest Glory Track</li>
+            <li>4. Most Omen Tokens</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ornament" style="margin-top:48px;">✦ &nbsp; ⚡ &nbsp; ✦</div>
+
+      <div class="box dark" style="margin-top:0; text-align:center; padding:22px;">
+        <p style="font-family:'Cinzel',serif; font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-pale); margin-bottom:10px;">v6.0 Balance Changes Summary</p>
+        <p style="font-size:0.88rem;">Zeus passive → once per round, one opponent, no consecutive targeting &nbsp;·&nbsp; Weapon damage capped at +4 combined &nbsp;·&nbsp; Domain Mastery limited to 3 domains per player &nbsp;·&nbsp; God / Demi-God direct PP cap of 4 per round &nbsp;·&nbsp; Round goal snowball goals capped at 3 PP &nbsp;·&nbsp; Journeys / Themes / Traditions removed as game mechanics</p>
+      </div>
+    </section>
+
+  </main>
+</div><!-- /book-wrap -->
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="footer-title">AGON</span>
+  <div class="footer-rule"></div>
+  <p>Griffin Games &nbsp;·&nbsp; The Archaic Age &nbsp;·&nbsp; Final Rulebook v6.0</p>
+  <p>Engine Builder · Battle · Mythology</p>
+</footer>
+
+<!-- SCROLL SPY -->
+<script>
+(function(){
+  const links = document.querySelectorAll('#sidebar a');
+  const sects = [...document.querySelectorAll('section[id]')];
+
+  function update(){
+    const scrollY = window.scrollY + 80;
+    let current = sects[0];
+    for(const s of sects){ if(s.offsetTop <= scrollY) current = s; }
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+    });
+  }
+
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+
+  // smooth scroll on nav click
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+})();
+</script>
+</body>
+</html>
